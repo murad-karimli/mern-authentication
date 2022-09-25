@@ -1,17 +1,40 @@
-const getGoals=(req,res)=>{
-    res.status(200).json({message:"get request"})
+const Goal=require("../models/goalModel")
+
+const getGoals= async(req,res)=>{ 
+    const goals=await Goal.find()
+    res.status(200).json(goals)
 };
 
-const setGoal=(req,res)=>{
-    res.status(200).json({message:"post request"})
+const setGoal= async(req,res)=>{
+    const setNewGoal=Goal.create(
+        {
+            text:req.body.text
+        }
+    )
+    res.status(200).json({message:"New goal added"})
 }
 
-const updateGoal=(req,res)=>{
-    res.status(200).json({message: `put request to ${req.params.id}`})
+const updateGoal= async(req,res)=>{
+    const goal=Goal.findById(req.params.id)
+if(!goal)
+{
+    res.status(400);
+    throw new error
+}
+    const uptated=await Goal.findByIdAndUpdate(req.params.id,req.body,{new:true})
+    res.status(200).json(uptated)
 }
 
-const deleteGoal=(req,res)=>{
-    res.status(200).json({message:`delete request to ${req.params.id}`})
+const deleteGoal= async(req,res)=>{
+    const goal=Goal.findById(req.params.id)
+    if(!goal)
+    {
+        res.status(400);
+        throw new error
+    }
+
+    await Goal.findByIdAndRemove(req.params.id, req.body)
+    res.status(200).json({message:` Element with ${req.params.id} id is deleted`})
 }
 module.exports={
     getGoals,
