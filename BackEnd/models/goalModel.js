@@ -1,7 +1,11 @@
+
+
 const mongoose = require("mongoose");
 
 const goalSchema = mongoose.Schema({
-    text: String,
+    name: String,
+    amount:Number,
+    price:Number,
 },
     {
         timestamps: true
